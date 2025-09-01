@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Assignment Tracker - Stay Organized & Ahead</title>
+    <meta name="description" content="A beautiful, modern assignment tracker to help students stay organized and on top of their academic responsibilities.">
+    <meta name="keywords" content="assignment tracker, student planner, homework organizer, academic planner">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Loading Your Assignment Tracker</h2>
+            <p>Preparing your academic journey...</p>
+        </div>
+    </div>
+    
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-graduation-cap"></i> Student Assignment Tracker</h1>
+            <p class="subtitle">Stay organized and on top of your academic journey</p>
+            <div class="header-actions">
+                <button class="header-btn" onclick="showStatistics()" title="View Statistics (Ctrl+S)">
+                    <i class="fas fa-chart-bar"></i> Stats
+                </button>
+                <button class="header-btn" onclick="showHelp()" title="Help & Shortcuts (Ctrl+H)">
+                    <i class="fas fa-question-circle"></i> Help
+                </button>
+                <button class="header-btn" onclick="clearAllFilters()" title="Clear All Filters (Esc)">
+                    <i class="fas fa-filter"></i> Clear Filters
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Enhanced Summary Section -->
+            <section class="summary-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                    <p>Track your progress and stay motivated</p>
+                </div>
+                <div class="summary-grid">
+                    <div class="summary-card total" onclick="showStatistics()">
+                        <div class="card-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Assignments</h3>
+                            <p class="number">32</p>
+                            <div class="card-progress">
+                                <div class="progress-bar-mini">
+                                    <div class="progress-fill-mini" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card done" onclick="filterByStatus('Completed')">
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Completed</h3>
+                            <p class="number">0</p>
+                            <div class="card-progress">
+                                <div class="progress-bar-mini">
+                                    <div class="progress-fill-mini" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card pending" onclick="filterByStatus('Not Started')">
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Pending</h3>
+                            <p class="number">32</p>
+                            <div class="card-progress">
+                                <div class="progress-bar-mini">
+                                    <div class="progress-fill-mini" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card time" onclick="showTimeBreakdown()">
+                        <div class="card-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Time</h3>
+                            <p class="number">14:23:00</p>
+                            <div class="card-progress">
+                                <div class="progress-bar-mini">
+                                    <div class="progress-fill-mini" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enhanced Controls Section -->
+            <section class="controls-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-search"></i> Search & Filter</h3>
+                    <p>Find exactly what you need quickly</p>
+                </div>
+                <div class="controls-grid">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search assignments by name, course, type, or notes..." aria-label="Search assignments">
+                        <div class="search-tips">
+                            <small>💡 Try searching for "High" priority or "Stats" course</small>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select id="courseFilter" aria-label="Filter by course">
+                            <option value="">All Courses</option>
+                            <option value="Enviro">Environmental Science</option>
+                            <option value="Euro">AP European History</option>
+                            <option value="Psych">AP Psychology</option>
+                            <option value="Lit">Literature</option>
+                            <option value="Stats">AP Statistics</option>
+                            <option value="Calc">Calculus</option>
+                            <option value="College Apps">College Applications</option>
+                        </select>
+                        
+                        <select id="priorityFilter" aria-label="Filter by priority">
+                            <option value="">All Priorities</option>
+                            <option value="High">High Priority</option>
+                            <option value="Medium">Medium Priority</option>
+                            <option value="Low">Low Priority</option>
+                        </select>
+                        
+                        <select id="statusFilter" aria-label="Filter by status">
+                            <option value="">All Statuses</option>
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="filterByPriority('High')">
+                        <i class="fas fa-exclamation-triangle"></i> High Priority
+                    </button>
+                    <button class="quick-btn" onclick="filterByDaysLeft(0)">
+                        <i class="fas fa-fire"></i> Due Today
+                    </button>
+                    <button class="quick-btn" onclick="filterByDaysLeft(7)">
+                        <i class="fas fa-calendar-week"></i> Due This Week
+                    </button>
+                    <button class="quick-btn" onclick="showUrgentAssignments()">
+                        <i class="fas fa-bell"></i> Urgent
+                    </button>
+                </div>
+            </section>
+
+            <!-- Add Task Section -->
+            <section class="add-task-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-plus-circle"></i> Add New Assignment</h3>
+                    <p>Create a new assignment to track</p>
+                </div>
+                <form class="add-task-form" id="addTaskForm">
+                    <input type="text" id="newAssignmentName" placeholder="Assignment name" required>
+                    <select id="newCourse" required>
+                        <option value="">Course</option>
+                        <option value="Enviro">Environmental Science</option>
+                        <option value="Euro">AP European History</option>
+                        <option value="Psych">AP Psychology</option>
+                        <option value="Lit">Literature</option>
+                        <option value="Stats">AP Statistics</option>
+                        <option value="Calc">Calculus</option>
+                        <option value="College Apps">College Applications</option>
+                    </select>
+                    <input type="date" id="newStartDate" required>
+                    <input type="date" id="newDueDate" required>
+                    <select id="newPriority" required>
+                        <option value="">Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <select id="newType" required>
+                        <option value="">Type</option>
+                        <option value="Homework">Homework</option>
+                        <option value="Quiz">Quiz</option>
+                        <option value="Test">Test</option>
+                        <option value="Project">Project</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Essay">Essay</option>
+                        <option value="Event">Event</option>
+                    </select>
+                    <input type="text" id="newEstTime" placeholder="Est. time (e.g., 2:30)">
+                    <button type="submit" class="add-task-btn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </form>
+            </section>
+
+            <!-- Enhanced Assignments Section -->
+            <section class="assignments-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-list-check"></i> Assignment List</h3>
+                    <div class="section-actions">
+                        <span class="assignment-count" id="assignmentCount">Showing 32 assignments</span>
+                        <button class="section-btn undo-btn" onclick="undoLastAction()" title="Undo last action" id="undoBtn" style="display: none;">
+                            <i class="fas fa-undo"></i> Undo
+                        </button>
+                        <button class="section-btn" onclick="exportAssignments()" title="Export to CSV">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="section-btn" onclick="sortAssignments()" title="Sort assignments">
+                            <i class="fas fa-sort"></i> Sort
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="assignments-table" role="table" aria-label="Assignments">
+                        <thead>
+                            <tr>
+                                <th scope="col" role="columnheader">Assignment</th>
+                                <th scope="col" role="columnheader">Course</th>
+                                <th scope="col" role="columnheader">Status</th>
+                                <th scope="col" role="columnheader">Due Date</th>
+                                <th scope="col" role="columnheader">Days Left</th>
+                                <th scope="col" role="columnheader">Priority</th>
+                                <th scope="col" role="columnheader">Type</th>
+                                <th scope="col" role="columnheader">Est. Time</th>
+                                <th scope="col" role="columnheader">Notes</th>
+                                <th scope="col" role="columnheader">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assignmentsTableBody" role="rowgroup">
+                            <!-- Assignment rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Enhanced YouTube Resources Section -->
+            <section class="resources-section">
+                <div class="section-header">
+                    <h2><i class="fab fa-youtube"></i> YouTube Resources</h2>
+                    <p>Educational videos and resources organized by course</p>
+                </div>
+                <div class="resources-grid" id="resourcesGrid">
+                    <!-- YouTube resources will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- New Features Section -->
+            <section class="features-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-star"></i> Quick Actions</h3>
+                    <p>Access common tasks and features</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card" onclick="showStatistics()">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Progress Analytics</h4>
+                        <p>View detailed statistics and progress charts</p>
+                    </div>
+                    <div class="feature-card" onclick="showTimeBreakdown()">
+                        <i class="fas fa-clock"></i>
+                        <h4>Time Management</h4>
+                        <p>Break down your time allocation by course</p>
+                    </div>
+                    <div class="feature-card" onclick="showPriorityMatrix()">
+                        <i class="fas fa-th"></i>
+                        <h4>Priority Matrix</h4>
+                        <p>Organize tasks by urgency and importance</p>
+                    </div>
+                    <div class="feature-card" onclick="showStudySchedule()">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h4>Study Schedule</h4>
+                        <p>Create a personalized study timetable</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Student Assignment Tracker</h4>
+                    <p>Stay organized, stay ahead!</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showHelp()">Help & Support</a></li>
+                        <li><a href="#" onclick="showStatistics()">Statistics</a></li>
+                        <li><a href="#" onclick="exportAssignments()">Export Data</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Keyboard Shortcuts</h4>
+                    <ul>
+                        <li><kbd>Ctrl+F</kbd> Search</li>
+                        <li><kbd>Ctrl+S</kbd> Stats</li>
+                        <li><kbd>Ctrl+H</kbd> Help</li>
+                        <li><kbd>Esc</kbd> Clear Filters</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Student Assignment Tracker. Built with ❤️ for students everywhere.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <script src="script.js"></script>
+</body>
+</html>
